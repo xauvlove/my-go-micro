@@ -5,7 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"image/png"
+	"my-micro/infra/imitate/vdb"
 	user "my-micro/service/user/proto"
+	"my-micro/web/model"
 	"my-micro/web/proto/getCaptcha"
 	"my-micro/web/utils"
 	"net/http"
@@ -78,4 +80,20 @@ func PostRet(c *gin.Context) {
 		fmt.Printf("%v", err)
 	}
 	c.JSON(http.StatusOK, registerResponse)
+}
+
+// 获取地域信息
+func GetArea(c *gin.Context) {
+	var areas []model.Area
+
+	data := vdb.GetString("areas")
+
+	if data != "" {
+		json.Unmarshal([]byte(data), &areas)
+	} else {
+		model.GlobalConn.Select("*").Find(&areas)
+		marshal, _ := json.Marshal(areas)
+		vdb.SetString("areas", string(marshal))
+	}
+	c.JSON(http.StatusOK, areas)
 }

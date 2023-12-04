@@ -12,12 +12,12 @@ var smsPrefix = "sms-verify-code:"
 
 // 保存验证码到 数据库/redis
 func SaveImgCode(uuid string, code string) error {
-	vdb.SetEx(imgPrefix+uuid, code, int64(time.Second*600))
+	vdb.SetExString(imgPrefix+uuid, code, int64(time.Second*600))
 	return nil
 }
 
 func CheckImgCode(uuid string, code string) bool {
-	v := vdb.Get(imgPrefix + uuid)
+	v := vdb.GetString(imgPrefix + uuid)
 	if v == "" {
 		return false
 	}
@@ -25,12 +25,12 @@ func CheckImgCode(uuid string, code string) bool {
 }
 
 func SaveSmsCode(phone string, code string) error {
-	vdb.SetEx(smsPrefix+phone, code, int64(time.Minute*10))
+	vdb.SetExString(smsPrefix+phone, code, int64(time.Minute*10))
 	return nil
 }
 
 func CheckSmsCode(phone string, code string) bool {
-	v := vdb.Get(smsPrefix + phone)
+	v := vdb.GetString(smsPrefix + phone)
 	if v == "" {
 		return false
 	}

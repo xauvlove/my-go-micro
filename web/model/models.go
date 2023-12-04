@@ -50,7 +50,7 @@ type Area struct {
 	Id   int
 	Name string
 	// 区域内的房屋
-	House []*House
+	House []*House `json:"houses"`
 }
 
 type Facility struct {

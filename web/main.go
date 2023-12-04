@@ -20,6 +20,7 @@ func main() {
 		rg1.GET("/imagecode/:uuid", controller.GetImageCd)
 		rg1.GET("/smscode/:phone", controller.GetSmsCd)
 		rg1.POST("/users", controller.PostRet)
+		rg1.GET("/areas", controller.GetArea)
 	}
 
 	// 启动

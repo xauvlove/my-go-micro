@@ -3,6 +3,7 @@ package main
 import (
 	"my-micro/service/user/handler"
 	user "my-micro/service/user/proto"
+	"my-micro/web/model"
 
 	"github.com/micro/go-micro"
 	"github.com/micro/go-micro/util/log"
@@ -10,6 +11,9 @@ import (
 )
 
 func main() {
+
+	// 初始化数据库
+	model.InitDB()
 
 	registry := consul.NewRegistry()
 

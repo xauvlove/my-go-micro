@@ -1,17 +1,19 @@
 package utils
 
 const (
-	SYSTEM_ERROR = "1"
-	RPC_ERROR    = "2"
-	CHECK_FAILD  = "3"
-	SUCCESS      = "4"
+	SYSTEM_ERROR   = "1"
+	RPC_ERROR      = "2"
+	CHECK_FAILD    = "3"
+	SUCCESS        = "4"
+	REGISTER_ERROR = "5"
 )
 
 var recodeText = map[string]string{
-	SYSTEM_ERROR: "系统错误",
-	RPC_ERROR:    "远程服务异常",
-	CHECK_FAILD:  "验证失败",
-	SUCCESS:      "成功",
+	SYSTEM_ERROR:   "系统错误",
+	RPC_ERROR:      "远程服务异常",
+	CHECK_FAILD:    "验证失败",
+	SUCCESS:        "成功",
+	REGISTER_ERROR: "用户注册失败",
 }
 
 func RecodeText(code string) string {

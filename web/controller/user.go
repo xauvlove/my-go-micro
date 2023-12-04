@@ -12,8 +12,6 @@ import (
 
 	"github.com/afocus/captcha"
 	"github.com/gin-gonic/gin"
-	"github.com/micro/go-micro"
-	"github.com/micro/go-plugins/registry/consul"
 )
 
 func GetSession(c *gin.Context) {
@@ -25,8 +23,7 @@ func GetSession(c *gin.Context) {
 
 func GetImageCd(c *gin.Context) {
 	// 指定服务发现
-	registry := consul.NewRegistry()
-	consulClient := micro.NewService(micro.Registry(registry))
+	consulClient := utils.InitMicro()
 	// 初始化客户端
 	microClient := getCaptcha.NewGetCaptchaService("go.micro.srv.getCaptcha", consulClient.Client())
 	// 调用服务端接口
@@ -44,8 +41,7 @@ func GetImageCd(c *gin.Context) {
 
 // https://localhost:8080//api/v1.0/smscode/13218001299?imageCode=St442C&uuid=fk36osfdiijoty34454435
 func GetSmsCd(c *gin.Context) {
-	registry := consul.NewRegistry()
-	consulClient := micro.NewService(micro.Registry(registry))
+	consulClient := utils.InitMicro()
 	microClient := user.NewUserService("go.micro.srv.user", consulClient.Client())
 
 	resp, err := microClient.SendSms(context.TODO(), &user.Request{
@@ -71,4 +67,15 @@ func PostRet(c *gin.Context) {
 	}
 	c.Bind(&req)
 
+	consulClient := utils.InitMicro()
+	microClient := user.NewUserService("go.micro.srv.user", consulClient.Client())
+	registerResponse, err := microClient.Register(context.TODO(), &user.RegisterRequest{
+		Mobile:   req.Mobile,
+		Password: req.Password,
+		SmsCode:  req.SmsCode,
+	})
+	if err != nil {
+		fmt.Printf("%v", err)
+	}
+	c.JSON(http.StatusOK, registerResponse)
 }
